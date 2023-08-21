@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "207991198813",
+    "project_id": "bookreview-flutter-app",
+    "storage_bucket": "bookreview-flutter-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207991198813:android:9a025fe5894c1c981d69b4",
+        "android_client_info": {
+          "package_name": "com.jjyoon.bookreviewapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207991198813-n0g88qo0o92f8rgcgn61a9mkpj6734re.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkBpx0QsvjUcQ9i9-yDTtJvcly38AtiLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207991198813-n0g88qo0o92f8rgcgn61a9mkpj6734re.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
