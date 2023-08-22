@@ -1,4 +1,5 @@
 import 'package:book_review_app/src/common/interceptor/custom_interceptor.dart';
+import 'package:book_review_app/src/common/model/naver_book_search_option.dart';
 import 'package:book_review_app/src/common/repository/naver_api_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final Dio dio;
+
   const MyApp({super.key, required this.dio});
 
   @override
@@ -26,8 +28,19 @@ class MyApp extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) => FutureBuilder(
-          future: context.read<NaverBookRepository>().searchBooks(),
+          future: context.read<NaverBookRepository>().searchBooks(
+                NaverBookSearchOption.init(
+                  query: 'flutter_git',
+                ),
+              ),
           builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return MaterialApp(
+                home: Center(
+                  child: Text('${snapshot.data?.items?.length ?? 0}'),
+                ),
+              );
+            }
             return Container();
           },
         ),

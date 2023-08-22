@@ -1,17 +1,13 @@
+import 'package:book_review_app/src/common/model/naver_book_info_results.dart';
+import 'package:book_review_app/src/common/model/naver_book_search_option.dart';
 import 'package:dio/dio.dart';
 
 class NaverBookRepository {
   final Dio _dio;
   NaverBookRepository(this._dio);
 
-  Future<dynamic> searchBooks() async {
-    var response = await _dio.get('v1/search/book.json', queryParameters: {
-      'query': '플러터',
-      'display': 10,
-      'start': 1,
-      'sort': 'date',
-    });
-
-    return true;
+  Future<NaverBookInfoResults> searchBooks(NaverBookSearchOption searchOption) async {
+    var response = await _dio.get('v1/search/book.json', queryParameters: searchOption.toMap());
+    return NaverBookInfoResults.fromJson(response.data);
   }
 }
