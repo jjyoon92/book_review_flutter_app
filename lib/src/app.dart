@@ -18,14 +18,7 @@ class _AppState extends State<App> {
     super.initState();
     router = GoRouter(
       routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const Home(),
-        ),
-        GoRoute(
-          path: '/detail',
-          builder: (context, state) => const Detail(),
-        ),
+
       ],
       initialLocation: '/',
     );
