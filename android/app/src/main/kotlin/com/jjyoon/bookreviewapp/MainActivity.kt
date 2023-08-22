@@ -1,4 +1,4 @@
-package com.jjyoon.bookreviewapp.book_review_app
+package com.jjyoon.bookreviewapp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -31,29 +31,7 @@ class MyApp extends StatelessWidget {
           create: (context) => NaverBookRepository(dio),
         ),
       ],
-      child: Builder(
-        builder: (context) => FutureBuilder(
-          future: context.read<NaverBookRepository>().searchBooks(
-                NaverBookSearchOption.init(
-                  query: 'flutter_git',
-                ),
-              ),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return MaterialApp(
-                home: Center(
-                  child: Text('${snapshot.data?.items?.length ?? 0}'),
-                ),
-              );
-            }
-            return Container();
-          },
-        ),
-      ),
-      // child: MultiBlocProvider(
-      //   providers: [],
-      //   child: App(),
-      // ),
+      child: const App(),
     );
   }
 }
