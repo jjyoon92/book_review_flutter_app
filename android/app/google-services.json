@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "207991198813-n0g88qo0o92f8rgcgn61a9mkpj6734re.apps.googleusercontent.com",
+          "client_id": "207991198813-500ulivhka77655k873d8fog5ol5i4q6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjyoon.bookreviewapp",
+            "certificate_hash": "eca06bd9fadba9de5807ddcdc57d3a1b0a5e49d6"
+          }
+        },
+        {
+          "client_id": "207991198813-791g48qrhdofsv3uqgljnpm7k3h1pers.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjyoon.bookreviewapp",
+            "certificate_hash": "1146b1460392ef2da26cc19bf650435f5d899c05"
+          }
+        },
+        {
+          "client_id": "207991198813-scmskbaa46uouihdjok1n2g7llcp3crd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +45,13 @@
             {
               "client_id": "207991198813-n0g88qo0o92f8rgcgn61a9mkpj6734re.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "207991198813-6kd6am6nikhekccbmff4enq8c07e5bi0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jjyoon.bookreviewapp.bookReviewApp"
+              }
             }
           ]
         }
