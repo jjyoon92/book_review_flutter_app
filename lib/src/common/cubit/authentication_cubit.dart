@@ -3,8 +3,9 @@ import 'package:book_review_app/src/common/model/user_model.dart';
 import 'package:book_review_app/src/common/repository/authentication_repository.dart';
 import 'package:book_review_app/src/common/repository/user_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
-class AuthenticationCubit extends Cubit<AuthenticationState> {
+class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier {
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
 
@@ -35,6 +36,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         ));
       }
     }
+
+    notifyListeners();
   }
 
   void googleLogin() async {
@@ -56,6 +59,7 @@ enum AuthenticationStatus {
   authentication,
   unAuthentication,
   unknown,
+  init,
   error,
 }
 
@@ -63,8 +67,10 @@ class AuthenticationState extends Equatable {
   final AuthenticationStatus status;
   final UserModel? user;
 
+  // 초기값을 unkown으로 하게되면 바로 로그인 페이지로 이동하기때문에 init을 추가하여 처음엔 init이고
+  // 로그인 체크를 하면서 unkown이 확인되면 로그인 페이지로 보낸다.
   const AuthenticationState({
-    this.status = AuthenticationStatus.unknown,
+    this.status = AuthenticationStatus.init,
     this.user,
   });
 
