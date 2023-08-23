@@ -1,5 +1,6 @@
 import 'package:book_review_app/src/detail.dart';
 import 'package:book_review_app/src/home.dart';
+import 'package:book_review_app/src/splash/page/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,10 +18,13 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     router = GoRouter(
-      routes: [
-
-      ],
       initialLocation: '/',
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const SplashPage(),
+        ),
+      ],
     );
     //route
   }
@@ -28,6 +32,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
