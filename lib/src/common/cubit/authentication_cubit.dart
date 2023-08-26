@@ -28,7 +28,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier
       var result = await _userRepository
           .findUserOne(user.uid!); // 로그인이 된 상태이므로 user테이블이 있으므로 uid! 로 강제 추출.
       if (result == null) {
-        emit(state.copyWith(status: AuthenticationStatus.unAuthentication));
+        // Google 로그인은 됐으나 회원가입은 안되어 있을 때, firebase에 uid 조회결과가 없음.
+        emit(state.copyWith(user: user, status: AuthenticationStatus.unAuthentication));
       } else {
         emit(state.copyWith(
           user: result,
@@ -38,6 +39,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier
     }
 
     notifyListeners();
+  }
+
+  void reloadAuth() {
+    _userStateChangedEvent(state.user);
   }
 
   void googleLogin() async {
