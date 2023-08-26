@@ -1,9 +1,12 @@
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
+import 'package:book_review_app/src/common/repository/user_repository.dart';
 import 'package:book_review_app/src/detail.dart';
 import 'package:book_review_app/src/home.dart';
+import 'package:book_review_app/src/home/page/home_page.dart';
 import 'package:book_review_app/src/init/page/init_page.dart';
 import 'package:book_review_app/src/login/page/login_page.dart';
 import 'package:book_review_app/src/root/page/root_page.dart';
+import 'package:book_review_app/src/signup/cubit/signup_cubit.dart';
 import 'package:book_review_app/src/signup/page/signup_page.dart';
 import 'package:book_review_app/src/splash/page/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +32,10 @@ class _AppState extends State<App> {
       redirect: (context, state) {
         // print(context.read<AuthenticationCubit>().state.status);
         var authStatus = context.read<AuthenticationCubit>().state.status;
-        switch(authStatus) {
+        switch (authStatus) {
           case AuthenticationStatus.authentication:
-            break;
+            // 회원가입 상태에서 로그인 완료.
+            return '/home';
           case AuthenticationStatus.unAuthentication:
             return '/signup';
           case AuthenticationStatus.unknown:
@@ -53,12 +57,18 @@ class _AppState extends State<App> {
           builder: (context, state) => const LoginPage(),
         ),
         GoRoute(
+          path: '/home',
+          builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
           path: '/signup',
-          builder: (context, state) => const SignupPage(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => SignupCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>()),
+            child: const SignupPage(),
+          ),
         ),
       ],
-    );
-    //route
+    ); //route
   }
 
   @override
