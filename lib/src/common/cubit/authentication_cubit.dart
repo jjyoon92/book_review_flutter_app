@@ -48,6 +48,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier
   void googleLogin() async {
     await _authenticationRepository.signInWithGoogle();
   }
+
   void appleLogin() async {
     await _authenticationRepository.signInWithApple();
   }
