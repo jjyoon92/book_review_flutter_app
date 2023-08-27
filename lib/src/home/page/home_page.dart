@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
           children: [
             InputWidget(isEnabled: false,
             onTap: () {
-              context.go('/search');
+              context.push('/search');
             },),
           ],
         ),
