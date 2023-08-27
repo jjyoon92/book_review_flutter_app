@@ -1,7 +1,9 @@
 import 'package:book_review_app/src/common/components/app_font.dart';
+import 'package:book_review_app/src/common/components/input_widget.dart';
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -25,7 +27,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(width: 16,),
                   AppFont(
-                    '${state.user!.name!}',
+                    state.user!.name! ?? '',
                     size: 16,
                   )
                 ],
@@ -34,7 +36,17 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(child: AppFont('HOME')),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
+          children: [
+            InputWidget(isEnabled: false,
+            onTap: () {
+              context.go('/search');
+            },),
+          ],
+        ),
+      )
     );
   }
 }

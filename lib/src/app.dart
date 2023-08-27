@@ -6,6 +6,7 @@ import 'package:book_review_app/src/home/page/home_page.dart';
 import 'package:book_review_app/src/init/page/init_page.dart';
 import 'package:book_review_app/src/login/page/login_page.dart';
 import 'package:book_review_app/src/root/page/root_page.dart';
+import 'package:book_review_app/src/search/page/search_page.dart';
 import 'package:book_review_app/src/signup/cubit/signup_cubit.dart';
 import 'package:book_review_app/src/signup/page/signup_page.dart';
 import 'package:book_review_app/src/splash/page/splash_page.dart';
@@ -59,6 +60,10 @@ class _AppState extends State<App> {
         GoRoute(
           path: '/home',
           builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/search',
+          builder: (context, state) => const SearchPage(),
         ),
         GoRoute(
           path: '/signup',
