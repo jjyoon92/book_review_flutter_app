@@ -29,44 +29,43 @@ class SearchPage extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           child: Column(
             children: [
               InputWidget(
                 onSearch: context.read<SearchBookCubit>().search,
               ),
-              Expanded(child: _SearchResultView())
+              const SizedBox(height: 15,),
+              const Expanded(child: _SearchResultView())
             ],
           ),
         ));
   }
 }
 
-class _SearchResultView extends StatelessWidget {
-  _SearchResultView({super.key});
+class _SearchResultView extends StatefulWidget {
+  const _SearchResultView({super.key});
 
+  @override
+  State<_SearchResultView> createState() => _SearchResultViewState();
+}
+
+class _SearchResultViewState extends State<_SearchResultView> {
   late SearchBookCubit cubit;
 
-  // Widget _initView() {
-  //   return const Center(
-  //       child: AppFont(
-  //     '리뷰할 책을 찾아보세요.',
-  //     size: 20,
-  //     fontWeight: FontWeight.bold,
-  //     color: Colors.grey,
-  //   ));
-  // }
-  //
-  // Widget _emptyView() {
-  //   return const Center(
-  //       child: AppFont(
-  //         '검색된 결과가 없습니다.',
-  //         size: 20,
-  //         fontWeight: FontWeight.bold,
-  //         color: Colors.grey,
-  //       ));
-  // }
-  //
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      if (controller.offset > controller.position.maxScrollExtent - 100 &&
+          cubit.state.status == CommonStateStatus.loaded) {
+        cubit.nextPage();
+      }
+    });
+  }
+
+  ScrollController controller = ScrollController();
+
   Widget _messageView(String message) {
     return Center(
         child: AppFont(
@@ -79,6 +78,7 @@ class _SearchResultView extends StatelessWidget {
 
   Widget result() {
     return ListView.separated(
+      controller: controller,
       itemBuilder: (context, index) {
         NaverBookInfo bookInfo = cubit.state.result!.items![index];
         return Row(
@@ -119,14 +119,13 @@ class _SearchResultView extends StatelessWidget {
           ],
         );
       },
-      separatorBuilder: (context, index) =>
-      const Padding(
+      separatorBuilder: (context, index) => const Padding(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         child: Divider(
           color: Color(0xff262626),
         ),
       ),
-      itemCount: cubit.state.result!.items!.length,
+      itemCount: cubit.state.result?.items?.length ?? 0,
     );
   }
 
