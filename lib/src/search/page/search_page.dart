@@ -1,6 +1,10 @@
 import 'package:book_review_app/src/common/components/app_font.dart';
 import 'package:book_review_app/src/common/components/input_widget.dart';
+import 'package:book_review_app/src/common/enum/common_state_status.dart';
+import 'package:book_review_app/src/common/model/naver_book_info.dart';
+import 'package:book_review_app/src/search/cubit/search_book_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,12 +31,115 @@ class SearchPage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
           child: Column(
-            children: [InputWidget(
-              onSearch: (searchKey) {
-
-              },
-            )],
+            children: [
+              InputWidget(
+                onSearch: context.read<SearchBookCubit>().search,
+              ),
+              Expanded(child: _SearchResultView())
+            ],
           ),
         ));
+  }
+}
+
+class _SearchResultView extends StatelessWidget {
+  _SearchResultView({super.key});
+
+  late SearchBookCubit cubit;
+
+  // Widget _initView() {
+  //   return const Center(
+  //       child: AppFont(
+  //     '리뷰할 책을 찾아보세요.',
+  //     size: 20,
+  //     fontWeight: FontWeight.bold,
+  //     color: Colors.grey,
+  //   ));
+  // }
+  //
+  // Widget _emptyView() {
+  //   return const Center(
+  //       child: AppFont(
+  //         '검색된 결과가 없습니다.',
+  //         size: 20,
+  //         fontWeight: FontWeight.bold,
+  //         color: Colors.grey,
+  //       ));
+  // }
+  //
+  Widget _messageView(String message) {
+    return Center(
+        child: AppFont(
+      message,
+      size: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.grey,
+    ));
+  }
+
+  Widget result() {
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        NaverBookInfo bookInfo = cubit.state.result!.items![index];
+        return Row(
+          children: [
+            SizedBox(
+              width: 75,
+              height: 115,
+              child: Image.network(bookInfo.image ?? ''),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AppFont(
+                    bookInfo.title ?? '',
+                    maxLine: 2,
+                    overflow: TextOverflow.ellipsis,
+                    size: 16,
+                  ),
+                  const SizedBox(height: 7),
+                  AppFont(
+                    bookInfo.author ?? '',
+                    color: const Color(0xff878787),
+                    size: 13,
+                  ),
+                  const SizedBox(height: 13),
+                  AppFont(
+                    bookInfo.description ?? '',
+                    color: const Color(0xff838383),
+                    maxLine: 2,
+                    overflow: TextOverflow.ellipsis,
+                    size: 12,
+                  ),
+                ],
+              ),
+            )
+          ],
+        );
+      },
+      separatorBuilder: (context, index) =>
+      const Padding(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        child: Divider(
+          color: Color(0xff262626),
+        ),
+      ),
+      itemCount: cubit.state.result!.items!.length,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    cubit = context.watch<SearchBookCubit>();
+    if (cubit.state.status == CommonStateStatus.init) {
+      return _messageView('리뷰할 책을 찾아보세요.');
+    }
+    if (cubit.state.status == CommonStateStatus.loaded &&
+        (cubit.state.result == null || cubit.state.result!.items!.isEmpty)) {
+      return _messageView('검색된 결과가 없습니다.');
+    }
+    return result();
   }
 }
