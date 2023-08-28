@@ -14,15 +14,19 @@ class SearchBookCubit extends Cubit<SearchBookState> {
     emit(
       state.copyWith(
         status: CommonStateStatus.loading,
+        result: const NaverBookInfoResults.init(),
         searchOption: state.searchOption!.copyWith(query: searchKey),
       ),
     );
+    _searchToNaverApi();
+  }
+
+  void _searchToNaverApi() async {
     var result = await _naverBookRepository.searchBooks(state.searchOption!);
     // 불러올 데이터의 번호가 총 갯수를 초과하거나 데이터 목록이 비었을 때
     if (result.start! > result.total! || result.items!.isEmpty)   {
       emit(state.copyWith(status: CommonStateStatus.complete));
     }
-
     emit(state.copyWith(
         status: CommonStateStatus.loaded,
         result: state.result!.copyWith(items: result.items)));
@@ -36,7 +40,7 @@ class SearchBookCubit extends Cubit<SearchBookState> {
             start: state.searchOption!.start! + state.searchOption!.display!),
       ),
     );
-    search(state.searchOption!.query ?? '');
+    _searchToNaverApi();
   }
 }
 
