@@ -10,7 +10,7 @@ class NaverBookSearchOption extends Equatable {
   final int? start;
   final NaverBookSearchType? sort;
 
-  const NaverBookSearchOption.init({required String query}):this(
+  const NaverBookSearchOption.init({required String query}) :this(
     query: query,
     display: 10,
     start: 1,
@@ -26,8 +26,24 @@ class NaverBookSearchOption extends Equatable {
 
   Map<String, dynamic> toMap() => _$NaverBookSearchOptionToJson(this);
 
+  NaverBookSearchOption copyWith({
+    String? query,
+    int? display,
+    int? start,
+    NaverBookSearchType? sort,
+  }) {
+    return NaverBookSearchOption(
+      query: query ?? this.query,
+      display: display ?? this.display,
+      start: start ?? this.start,
+      sort: sort ?? this.sort,
+    );
+  }
+
+
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         query,
         display,
         start,
