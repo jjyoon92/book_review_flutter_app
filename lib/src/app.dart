@@ -8,6 +8,7 @@ import 'package:book_review_app/src/home.dart';
 import 'package:book_review_app/src/home/page/home_page.dart';
 import 'package:book_review_app/src/init/page/init_page.dart';
 import 'package:book_review_app/src/login/page/login_page.dart';
+import 'package:book_review_app/src/review/page/review_page.dart';
 import 'package:book_review_app/src/root/page/root_page.dart';
 import 'package:book_review_app/src/search/cubit/search_book_cubit.dart';
 import 'package:book_review_app/src/search/page/search_page.dart';
@@ -76,6 +77,11 @@ class _AppState extends State<App> {
           path: '/info',
           builder: (context, state) =>
               BookInfoPage(state.extra as NaverBookInfo),
+        ),
+        GoRoute(
+          path: '/review',
+          builder: (context, state) =>
+              ReviewPage(state.extra as NaverBookInfo),
         ),
         GoRoute(
             path: '/search',

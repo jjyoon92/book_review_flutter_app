@@ -41,9 +41,18 @@ class BookInfoPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 20 + MediaQuery.of(context).padding.bottom,),
-        child: Btn(onTap: (){},
-        text: '리뷰하기',),
+        padding: EdgeInsets.only(
+          left: 20.0,
+          right: 20,
+          top: 20,
+          bottom: 20 + MediaQuery.of(context).padding.bottom,
+        ),
+        child: Btn(
+          onTap: () {
+            context.push('/review', extra: bookInfo);
+          },
+          text: '리뷰하기',
+        ),
       ),
     );
   }
@@ -78,7 +87,7 @@ class _BookDisplayLayer extends StatelessWidget {
             ),
             const SizedBox(width: 5),
             const AppFont(
-              '9.23',
+              '9.25',
               size: 16,
               color: Color(0xffF4AA2B),
             )
