@@ -1,4 +1,6 @@
+import 'package:book_review_app/src/book_info/page/book_info_page.dart';
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
+import 'package:book_review_app/src/common/model/naver_book_info.dart';
 import 'package:book_review_app/src/common/repository/naver_api_repository.dart';
 import 'package:book_review_app/src/common/repository/user_repository.dart';
 import 'package:book_review_app/src/detail.dart';
@@ -71,11 +73,16 @@ class _AppState extends State<App> {
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
+          path: '/info',
+          builder: (context, state) =>
+              BookInfoPage(state.extra as NaverBookInfo),
+        ),
+        GoRoute(
             path: '/search',
             builder: (context, state) => BlocProvider(
-                  create: (context) => SearchBookCubit(context.read<NaverBookRepository>()),
-                  child: const SearchPage(),
-                )),
+                create: (context) => SearchBookCubit(
+                      context.read<NaverBookRepository>()),
+                child: const SearchPage())),
         GoRoute(
           path: '/signup',
           builder: (context, state) => BlocProvider(
