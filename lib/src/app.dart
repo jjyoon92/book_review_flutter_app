@@ -1,7 +1,9 @@
 import 'package:book_review_app/src/book_info/page/book_info_page.dart';
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
 import 'package:book_review_app/src/common/model/naver_book_info.dart';
+import 'package:book_review_app/src/common/repository/book_review_info_repository.dart';
 import 'package:book_review_app/src/common/repository/naver_api_repository.dart';
+import 'package:book_review_app/src/common/repository/review_repository.dart';
 import 'package:book_review_app/src/common/repository/user_repository.dart';
 import 'package:book_review_app/src/detail.dart';
 import 'package:book_review_app/src/home.dart';
@@ -85,7 +87,9 @@ class _AppState extends State<App> {
             create: (context) {
               var bookInfo = state.extra as NaverBookInfo;
               var uid = context.read<AuthenticationCubit>().state.user!.uid!;
-              return ReviewCubit(uid, bookInfo);
+              return ReviewCubit(
+                  context.read<BookReviewInfoRepository>(),
+                  context.read<ReviewRepository>(), uid, bookInfo);
             },
             child: ReviewPage(state.extra as NaverBookInfo),
           ),
