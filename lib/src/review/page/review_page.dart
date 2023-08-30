@@ -3,7 +3,9 @@ import 'package:book_review_app/src/common/components/app_font.dart';
 import 'package:book_review_app/src/common/components/btn.dart';
 import 'package:book_review_app/src/common/components/review_slider_bar.dart';
 import 'package:book_review_app/src/common/model/naver_book_info.dart';
+import 'package:book_review_app/src/review/cubit/review_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,9 +42,8 @@ class ReviewPage extends StatelessWidget {
           bottom: 20 + MediaQuery.of(context).padding.bottom,
         ),
         child: Btn(
-          onTap: () {
-            context.push('/review', extra: bookInfo);
-          },
+          onTap: context.read<ReviewCubit>().save,
+          // context.push('/review', extra: bookInfo);
           text: '저장',
         ),
       ),
@@ -91,9 +92,9 @@ class _HeaderBookInfo extends StatelessWidget {
                   color: const Color(0xff878787),
                 ),
                 const SizedBox(height: 10),
-                ReviewSliderBar(onChange: (double value) {
-                  print(value);
-                })
+                ReviewSliderBar(
+                  onChange: context.read<ReviewCubit>().changeValue,
+                ),
               ],
             ),
           ),
@@ -119,9 +120,7 @@ class _ReviewBox extends StatelessWidget {
           color: Color(0xff585858),
         ),
       ),
-      onChanged: (value) {
-
-      },
+      onChanged: context.read<ReviewCubit>().changeReview,
       style: const TextStyle(
         color: Colors.white,
       ),
