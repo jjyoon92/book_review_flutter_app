@@ -31,7 +31,16 @@ class ReviewPage extends StatelessWidget {
         children: [
           _HeaderBookInfo(bookInfo),
           const AppDivider(),
-          Expanded(child: _ReviewBox()),
+          Expanded(
+              child: BlocBuilder<ReviewCubit, ReviewState>(
+                  // 기존에 작성된 리뷰를 수정하려할때 텍스트에디터의 첫 위치로 가는 현상 해결.
+                  buildWhen: (previous, current) =>
+                      current.isEditMode != previous.isEditMode,
+                  builder: (context, state) {
+                    return _ReviewBox(
+                      initReview: state.reviewInfo?.review,
+                    );
+                  })),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -92,9 +101,13 @@ class _HeaderBookInfo extends StatelessWidget {
                   color: const Color(0xff878787),
                 ),
                 const SizedBox(height: 10),
-                ReviewSliderBar(
-                  onChange: context.read<ReviewCubit>().changeValue,
-                ),
+                BlocBuilder<ReviewCubit, ReviewState>(
+                    builder: (context, state) {
+                  return ReviewSliderBar(
+                    initValue: state.reviewInfo?.value ?? 0,
+                    onChange: context.read<ReviewCubit>().changeValue,
+                  );
+                }),
               ],
             ),
           ),
@@ -104,12 +117,31 @@ class _HeaderBookInfo extends StatelessWidget {
   }
 }
 
-class _ReviewBox extends StatelessWidget {
-  const _ReviewBox({super.key});
+class _ReviewBox extends StatefulWidget {
+  final String? initReview;
+
+  const _ReviewBox({super.key, this.initReview});
+
+  @override
+  State<_ReviewBox> createState() => _ReviewBoxState();
+}
+
+class _ReviewBoxState extends State<_ReviewBox> {
+  TextEditingController editingController = TextEditingController();
+
+  @override
+  void didUpdateWidget(covariant _ReviewBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // if (editingController.text != widget.initReview) {
+    //   editingController.text = widget.initReview ?? '';
+    // }
+    editingController.text = widget.initReview ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: editingController,
       autofocus: true,
       maxLines: null,
       decoration: const InputDecoration(

@@ -14,7 +14,7 @@ class ReviewRepository {
     var doc = await db
         .collection('review')
         .where('bookId', isEqualTo: bookId)
-        .where('reviewUid', isEqualTo: uid)
+        .where('reviewerUid', isEqualTo: uid)
         .get();
 
     if (doc.docs.isEmpty) {
@@ -28,7 +28,7 @@ class ReviewRepository {
     var data = await db
         .collection('review')
         .where('bookId', isEqualTo: review.bookId)
-        .where('reviewUid', isEqualTo: review.reviewerUid)
+        .where('reviewerUid', isEqualTo: review.reviewerUid)
         .get();
 
     await db
