@@ -1,11 +1,17 @@
+import 'package:book_review_app/src/book_info/page/book_info_page.dart';
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
+import 'package:book_review_app/src/common/model/naver_book_info.dart';
+import 'package:book_review_app/src/common/repository/book_review_info_repository.dart';
 import 'package:book_review_app/src/common/repository/naver_api_repository.dart';
+import 'package:book_review_app/src/common/repository/review_repository.dart';
 import 'package:book_review_app/src/common/repository/user_repository.dart';
 import 'package:book_review_app/src/detail.dart';
 import 'package:book_review_app/src/home.dart';
 import 'package:book_review_app/src/home/page/home_page.dart';
 import 'package:book_review_app/src/init/page/init_page.dart';
 import 'package:book_review_app/src/login/page/login_page.dart';
+import 'package:book_review_app/src/review/cubit/review_cubit.dart';
+import 'package:book_review_app/src/review/page/review_page.dart';
 import 'package:book_review_app/src/root/page/root_page.dart';
 import 'package:book_review_app/src/search/cubit/search_book_cubit.dart';
 import 'package:book_review_app/src/search/page/search_page.dart';
@@ -71,11 +77,29 @@ class _AppState extends State<App> {
           builder: (context, state) => const HomePage(),
         ),
         GoRoute(
+          path: '/info',
+          builder: (context, state) =>
+              BookInfoPage(state.extra as NaverBookInfo),
+        ),
+        GoRoute(
+          path: '/review',
+          builder: (context, state) => BlocProvider(
+            create: (context) {
+              var bookInfo = state.extra as NaverBookInfo;
+              var uid = context.read<AuthenticationCubit>().state.user!.uid!;
+              return ReviewCubit(
+                  context.read<BookReviewInfoRepository>(),
+                  context.read<ReviewRepository>(), uid, bookInfo);
+            },
+            child: ReviewPage(state.extra as NaverBookInfo),
+          ),
+        ),
+        GoRoute(
             path: '/search',
             builder: (context, state) => BlocProvider(
-                  create: (context) => SearchBookCubit(context.read<NaverBookRepository>()),
-                  child: const SearchPage(),
-                )),
+                create: (context) =>
+                    SearchBookCubit(context.read<NaverBookRepository>()),
+                child: const SearchPage())),
         GoRoute(
           path: '/signup',
           builder: (context, state) => BlocProvider(

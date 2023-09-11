@@ -53,6 +53,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier
     await _authenticationRepository.signInWithApple();
   }
 
+  void logout() async {
+    _authenticationRepository.logout();
+  }
+
   @override
   void onChange(Change<AuthenticationState> change) {
     super.onChange(change);

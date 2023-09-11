@@ -68,7 +68,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: Stack(fit: StackFit.expand, children: [
         Image.asset(
-          'assets/images/splash_bg.png',
+          'assets/images/login_bg.png',
           fit: BoxFit.cover,
         ),
         Container(
@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
                 const Column(
                   children: [
                     AppFont(
-                      '책 리뷰',
+                      'Book & Review',
                       size: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -88,9 +88,9 @@ class LoginPage extends StatelessWidget {
                       height: 30,
                     ),
                     AppFont(
-                      '로그인하여 직접 리뷰를 남겨보세요.\n많은 사람들이 책을 고르기에 도움이 될 거에요!',
+                      '여러분의 감상을 리뷰로 작성하고\n다른 사람들과 공유해보세요.',
                       size: 13,
-                      color: Color(0xff878787),
+                      color: Color(0xffd7d7d7),
                       textAlign: TextAlign.center,
                     ),
                   ],
