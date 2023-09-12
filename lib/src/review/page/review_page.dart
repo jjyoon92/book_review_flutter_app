@@ -39,8 +39,8 @@ class ReviewPage extends StatelessWidget {
               Expanded(
                   child: BlocBuilder<ReviewCubit, ReviewState>(
                       // 기존에 작성된 리뷰를 수정하려할때 텍스트에디터의 첫 위치로 가는 현상 해결.
-                      buildWhen: (previous, current) =>
-                          current.isEditMode != previous.isEditMode,
+                      // buildWhen: (previous, current) =>
+                      //     current.isEditMode != previous.isEditMode,
                       builder: (context, state) {
                         return _ReviewBox(
                           initReview: state.reviewInfo?.review,
@@ -165,7 +165,6 @@ class _HeaderBookInfo extends StatelessWidget {
 
 class _ReviewBox extends StatefulWidget {
   final String? initReview;
-
   const _ReviewBox({super.key, this.initReview});
 
   @override
@@ -178,17 +177,16 @@ class _ReviewBoxState extends State<_ReviewBox> {
   @override
   void didUpdateWidget(covariant _ReviewBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // if (editingController.text != widget.initReview) {
-    //   editingController.text = widget.initReview ?? '';
-    // }
-    editingController.text = widget.initReview ?? '';
+    if (editingController.text != widget.initReview) {
+      editingController.text = widget.initReview ?? '';
+    }
+    // editingController.text = widget.initReview ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: editingController,
-      autofocus: true,
       maxLines: null,
       decoration: const InputDecoration(
         border: InputBorder.none,
@@ -203,5 +201,11 @@ class _ReviewBoxState extends State<_ReviewBox> {
         color: Colors.white,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    editingController.dispose();
+    super.dispose();
   }
 }
