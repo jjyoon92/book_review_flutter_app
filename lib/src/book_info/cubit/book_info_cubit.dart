@@ -20,12 +20,18 @@ class BookInfoCubit extends Cubit<BookInfoState> {
     _loadBookReviewInfo();
   }
 
+  void refresh() {
+    _loadBookReviewInfo();
+  }
+
   void _loadBookReviewInfo() async {
+    emit(state.copyWith(status: CommonStateStatus.loading));
     var data = await _bookReviewInfoRepository.loadBookReviewInfo(bookId);
     if (data != null) {
-      // 리뷰 정보가 있는 상태
+      //리뷰 정보가 있는 상태
       if (data.reviewerUids!.isEmpty) return;
-      var reviewList = await _userRepository.allUserInfos(data.reviewerUids!);
+      var reviewList =
+      await _userRepository.allUserInfos(data.reviewerUids ?? []);
       emit(state.copyWith(
         status: CommonStateStatus.loaded,
         bookReviewInfo: data,
@@ -61,5 +67,5 @@ class BookInfoState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [reviewers, bookReviewInfo, status];
 }

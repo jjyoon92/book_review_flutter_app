@@ -52,8 +52,11 @@ class BookInfoPage extends StatelessWidget {
               .bottom,
         ),
         child: Btn(
-          onTap: () {
-            context.push('/review', extra: bookInfo);
+          onTap: () async {
+            var isNeedsRefresh = await context.push<bool?>('/review', extra: bookInfo);
+            if(isNeedsRefresh != null && isNeedsRefresh) {
+              context.read<BookInfoCubit>().refresh();
+            }
           },
           text: '리뷰하기',
         ),
@@ -94,6 +97,7 @@ class _BookDisplayLayer extends StatelessWidget {
               const SizedBox(width: 5),
               BlocBuilder<BookInfoCubit, BookInfoState>(
                 builder: (context, state) {
+                  print("state? : ${state.bookReviewInfo}");
                   return AppFont(
                     state.bookReviewInfo == null
                         ? '리뷰 점수 없음'

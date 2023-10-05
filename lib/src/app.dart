@@ -38,8 +38,8 @@ class _AppState extends State<App> {
       redirect: (context, state) {
         // print(context.read<AuthenticationCubit>().state.status);
         var authStatus = context.read<AuthenticationCubit>().state.status;
-        // authentication 상태에서 다른 페이지로 넘어갈때 '/home'으로 리다이렉트 되는 현상을 방지하기 위하여
-        // 아래의 경로로 이동할 때만 '/home' 경로로 리다이렉트 시킨다.
+        // authentication 상태에서 다른 페이지로 넘어갈 때 '/home'으로 리다이렉트 되는 현상을 방지하기 위하여
+        // 아래의 경로로 이동할 때만 '/home' 경로로 리다이렉트
         var blockPageInAuthenticationState = ['/', '/login', '/signup'];
         print(state.matchedLocation);
         switch (authStatus) {
