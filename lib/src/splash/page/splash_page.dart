@@ -1,4 +1,3 @@
-import 'package:book_review_app/src/app.dart';
 import 'package:book_review_app/src/common/components/app_font.dart';
 import 'package:book_review_app/src/common/cubit/app_data_load_cubit.dart';
 import 'package:book_review_app/src/common/cubit/authentication_cubit.dart';
@@ -33,13 +32,13 @@ class SplashPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AppFont(
+                  const AppFont(
                     '도서 리뷰 앱으로\n좋아하는 책을 찾아보세요',
                     textAlign: TextAlign.center,
                     size: 28,
                     fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   BlocBuilder<SplashCubit, LoadStatus>(
