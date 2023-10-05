@@ -1,9 +1,10 @@
-import 'package:book_review_app/src/app.dart';
+import 'package:book_review_app/src/book_info/cubit/book_info_cubit.dart';
 import 'package:book_review_app/src/common/components/app_divider.dart';
 import 'package:book_review_app/src/common/components/app_font.dart';
 import 'package:book_review_app/src/common/components/btn.dart';
 import 'package:book_review_app/src/common/model/naver_book_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,7 +46,10 @@ class BookInfoPage extends StatelessWidget {
           left: 20.0,
           right: 20,
           top: 20,
-          bottom: 20 + MediaQuery.of(context).padding.bottom,
+          bottom: 20 + MediaQuery
+              .of(context)
+              .padding
+              .bottom,
         ),
         child: Btn(
           onTap: () {
@@ -61,58 +65,70 @@ class BookInfoPage extends StatelessWidget {
 class _BookDisplayLayer extends StatelessWidget {
   final NaverBookInfo bookInfo;
 
-  const _BookDisplayLayer(this.bookInfo, {super.key});
+  const _BookDisplayLayer(this.bookInfo);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(7),
-          child: SizedBox(
-            width: 152,
-            height: 227,
-            child: Image.network(
-              bookInfo.image ?? '',
-              fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(7),
+            child: SizedBox(
+              width: 152,
+              height: 227,
+              child: Image.network(
+                bookInfo.image ?? '',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/svg/icons/icon_star.svg',
-            ),
-            const SizedBox(width: 5),
-            const AppFont(
-              '9.25',
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/svg/icons/icon_star.svg',
+              ),
+              const SizedBox(width: 5),
+              BlocBuilder<BookInfoCubit, BookInfoState>(
+                builder: (context, state) {
+                  return AppFont(
+                    state.bookReviewInfo == null
+                        ? '리뷰 점수 없음'
+                        : (state.bookReviewInfo!.totalCounts! /
+                        state.bookReviewInfo!.reviewerUids!.length)
+                        .toStringAsFixed(2),
+                    size: 16,
+                    color: const Color(0xffF4AA2B),
+                  );
+                },
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: AppFont(
+              bookInfo.title ?? '',
               size: 16,
-              color: Color(0xffF4AA2B),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: AppFont(
-            bookInfo.title ?? '',
-            size: 16,
-            fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        AppFont(
-          bookInfo.author?.replaceAll('^', ' ') ?? '',
-          size: 12,
-          color: const Color(0xff878787),
-        ),
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          AppFont(
+            bookInfo.author?.replaceAll('^', ' ') ?? '',
+            size: 12,
+            color: const Color(0xff878787),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -120,7 +136,7 @@ class _BookDisplayLayer extends StatelessWidget {
 class _BookSimpleInfoLayer extends StatelessWidget {
   final NaverBookInfo bookInfo;
 
-  const _BookSimpleInfoLayer(this.bookInfo, {super.key});
+  const _BookSimpleInfoLayer(this.bookInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +164,7 @@ class _BookSimpleInfoLayer extends StatelessWidget {
 }
 
 class _ReviewerLayer extends StatelessWidget {
-  const _ReviewerLayer({super.key});
+  const _ReviewerLayer();
 
   Widget _noneReviewer() {
     return const Center(
@@ -172,9 +188,32 @@ class _ReviewerLayer extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            height: 80,
-            child: _noneReviewer(),
+          BlocBuilder<BookInfoCubit, BookInfoState>(
+              builder: (context, state) {
+                if (state.bookReviewInfo == null) {
+                  return SizedBox(
+                    height: 80,
+                    child: _noneReviewer(),
+                  );
+                } else {
+                  return SizedBox(
+                    height: 70,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CircleAvatar(
+                          radius: 32,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: Image
+                            .network(state.reviewers![index].profile ?? '')
+                            .image,);
+                      },
+                      separatorBuilder: (context, index) =>
+                      const SizedBox(width: 20,),
+                      itemCount: state.reviewers?.length ?? 0,),
+                  );
+                }
+              }
           ),
         ],
       ),
